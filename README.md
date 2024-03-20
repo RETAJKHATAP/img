@@ -58,42 +58,56 @@ API Endpoints
 - POST /upload: Uploads a new image file.
 
 ## Project Structure
+The project structure is organized as follows:
+```
+├── src/
+│   ├── controllers/
+│   │   ├── ImagesController.ts
+│   │   ├── IndexController.ts
+│   │   └── UploadController.ts
+│   ├── images/
+│   │   ├── original/
+│   │   └── thumbnails/
+│   ├── tests/
+│   │   ├── helpers/
+│   │   ├── ImagesController.test.ts
+│   │   ├── IndexController.test.ts
+│   │   ├── UploadController.test.ts
+│   │   ├── UtilFileExist.test.ts
+│   │   ├── UtilGenerateFileName.test.ts
+│   │   └── UtilResizeImage.test.ts
+│   ├── utils/
+│   │   ├── fileExist.ts
+│   │   ├── generateFileName.ts
+│   │   └── resizeImage.ts
+│   ├── app.ts
+│   ├── config.ts
+│   ├── index.ts
+│   └── routes.ts
+├── public/
+│   ├── index.html
+│   ├── script.js
+│   └── style.css
+├── package.json
+└── README.md
+```
+- The `src` directory contains the backend source code.
+  - The `controllers` directory contains the route handlers for different endpoints.
+  - The `images` directory stores the original and resized images.
+  - The `tests` directory contains the unit tests for the backend code.
+  - The `utils` directory contains utility functions used in the backend.
+  - `app.ts` is the main entry point for the Express application.
+  - `config.ts` contains configuration variables for the backend.
+  - `index.ts` is the entry point for the server.
+  - `routes.ts` defines the API routes and their corresponding controllers.
 
-src/
-├── controllers/
-│ ├── ImagesController.ts
-│ ├── IndexController.ts
-│ └── UploadController.ts
-├── images/
-│ ├── original/
-│ └── thumbnails/
-├── tests/
-│ ├── helpers/
-│ ├── ImagesController.test.ts
-│ ├── IndexController.test.ts
-│ ├── UploadController.test.ts
-│ ├── UtilFileExist.test.ts
-│ ├── UtilGenerateFileName.test.ts
-│ └── UtilResizeImage.test.ts
-├── utils/
-│ ├── fileExist.ts
-│ ├── generateFileName.ts
-│ └── resizeImage.ts
-├── app.ts
-├── config.ts
-├── index.ts
-└── routes.ts
-public/
-├── index.html
-├── script.js
-└── style.css
+- The `public` directory contains the frontend files.
+  - `index.html` is the main HTML file for the frontend.
+  - `script.js` contains the JavaScript code for the frontend functionality.
+  - `style.css` contains the CSS styles for the frontend.
 
-The `src` directory contains the backend source code.
-The `public` directory contains the frontend files.
-The `controllers` directory contains the route handlers for different endpoints.
-The `images` directory stores the original and resized images.
-The `tests` directory contains the unit tests for the backend code.
-The `utils` directory contains utility functions used in the backend.
+- `package.json` contains the project dependencies and scripts.
+- `README.md` is the project documentation file.
 
 ## License
 
