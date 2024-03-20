@@ -1,0 +1,26 @@
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .image-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .image-gallery img {
+    width: 100%;
+    height: auto;
+    cursor: pointer;
+  }
+  
+  .resized-url {
+    margin-top: 10px;
+  }
+  
+  .upload-message {
+    margin-top: 10px;
+  }
