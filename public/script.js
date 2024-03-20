@@ -8,11 +8,11 @@ const uploadMessage = document.querySelector('.upload-message');
 // Fetch available images and display them in the gallery
 async function fetchImages() {
   try {
-    const response = await fetch('/images');
+    const response = await fetch('http://localhost:8000/images');
     const data = await response.json();
-    data.forEach(image => {
+    data.forEach((image) => {
       const img = document.createElement('img');
-      img.src = `/images/${image}?w=200&h=200`;
+      img.src = `http://localhost:8000/images/${image}?w=200&h=200`;
       img.alt = image;
       img.addEventListener('click', () => {
         imageSelect.value = image;
@@ -38,17 +38,19 @@ async function handleResize(event) {
   resizedUrl.innerHTML = `Resized image URL: <a href="${url}" target="_blank">${url}</a>`;
 }
 
-// Handle image upload
+// Handle upload form submission
 async function handleUpload(event) {
   event.preventDefault();
-  const fileInput = document.querySelector('#image-upload');
+
+  const fileInput = document.querySelector('#fileInput');
   const file = fileInput.files[0];
+
   const formData = new FormData();
   formData.append('image', file);
   try {
-    const response = await fetch('upload', {
+    const response = await fetch('http://localhost:8000/upload', {
       method: 'POST',
-      body: formData
+      body: formData,
     });
     if (response.ok) {
       uploadMessage.textContent = 'Image uploaded successfully';

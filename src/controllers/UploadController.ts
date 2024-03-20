@@ -17,24 +17,21 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage: storage });
+const fileFilter = (req: Request, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
+  const allowedExtensions = ['.jpg', '.jpeg'];
+  const fileExtension = path.extname(file.originalname).toLowerCase();
+  if (allowedExtensions.includes(fileExtension)) {
+    cb(null, true);
+  } else {
+    cb(new Error('Only .jpg and .jpeg files are allowed.'));
+  }
+};
 
+const upload = multer({ storage: storage, fileFilter: fileFilter });
 
-UploadController.post(
-  '/',
-  upload.single('image'),
-  async (req: Request, res: Response): Promise<Response> => {
-    if (!req.file) {
-      return res.status(400).send('No file uploaded.');
-    }
-    const { filename } = req.file;
-    const imageName = filename.split('.')[0];
-    const width = Number(req.query.w) || null;
-    const height = Number(req.query.h) || null;
-
-    await resizeImage(imageName, 200,200);
-    if (width || height) await resizeImage(imageName, width, height);
-
-    return res.send('SUCCESS!');
-  },
-);
+UploadController.post('/', upload.single('image'), async (req: Request, res: Response): Promise<Response> => {
+  if (!req.file) {
+    return res.status(400).send('No file uploaded.');
+  }
+  return res.send('SUCCESS!');
+});

@@ -12,33 +12,30 @@ ImagesController.get('/', (req: Request, res: Response): void => {
   res.status(200).json(imageFiles);
 });
 
-ImagesController.get(
-  '/:imageName',
-  async (req: Request, res: Response): Promise<Response | void> => {
-    const { imageName } = req.params;
+ImagesController.get('/:imageName', async (req: Request, res: Response): Promise<Response | void> => {
+  const { imageName } = req.params;
 
-    const path = `${config.ORIGINAL_IMAGES_FOLDER}/${imageName}`;
-    const coreFileExists = fileExist(path);
+  const path = `${config.ORIGINAL_IMAGES_FOLDER}/${imageName}`;
+  const coreFileExists = fileExist(path);
 
-    if (coreFileExists) {
-      const width = Number(req.query.w) || null;
-      const height = Number(req.query.h) || null;
+  if (coreFileExists) {
+    const width = Number(req.query.w) || null;
+    const height = Number(req.query.h) || null;
 
-      if (!((width === null || width <= 0) && (height === null || height <= 0))) {
-        const imageNameWithoutExtension = imageName.split('.')[0];
-        const resizedImageName = generateFileName(imageNameWithoutExtension, width, height);
-        const resizedImagePath = `${config.THUMBNAIL_IMAGES_FOLDER}/${resizedImageName}`;
+    if (!((width === null || width <= 0) && (height === null || height <= 0))) {
+      const imageNameWithoutExtension = imageName.split('.')[0];
+      const resizedImageName = generateFileName(imageNameWithoutExtension, width, height);
+      const resizedImagePath = `${config.THUMBNAIL_IMAGES_FOLDER}/${resizedImageName}`;
 
-        if (!fileExist(resizedImagePath)) {
-          await resizeImage(imageNameWithoutExtension, width, height);
-        }
-
-        return res.status(200).sendFile(resizedImagePath);
-      } else {
-        return res.status(200).send('Please provide valid width and/or height for the image');
+      if (!fileExist(resizedImagePath)) {
+        await resizeImage(imageNameWithoutExtension, width, height);
       }
+
+      return res.status(200).sendFile(resizedImagePath);
     } else {
-      return res.status(404).send('Image failed to process: base file does not exists');
+      return res.status(200).send('Please provide valid width and/or height for the image');
     }
-  },
-);
+  } else {
+    return res.status(404).send('Image failed to process: base file does not exists');
+  }
+});
