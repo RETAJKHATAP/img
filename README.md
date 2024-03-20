@@ -54,7 +54,7 @@ API Endpoints
   - Query parameters:
     - w: Width of the resized image (optional)
     - h: Height of the resized image (optional)
-  - Example API IR:: http://localhost:8000/images/fjord.jpg?w=200&h=800
+  - Example: http://localhost:8000/images/fjord.jpg?w=200&h=800
 - POST /upload: Uploads a new image file.
 
 ## Project Structure
