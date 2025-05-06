@@ -15,7 +15,8 @@ interface ImageDimensions {
 }
 
 // تحويل الدالة إلى Promise مع تحديد النوع
-const sizeOfAsync: (buffer: Buffer) => Promise<ImageDimensions> = promisify(sizeOf);
+const sizeOfAsync: (buffer: Buffer) => Promise<ImageDimensions> =
+  promisify(sizeOf);
 
 // اختبارات نقاط النهاية (Endpoints)
 describe('GET /images', () => {
@@ -29,14 +30,19 @@ describe('GET /images/doesnotexist', () => {
   it('يجب أن يعيد رمز حالة 404 ورسالة خطأ', async () => {
     const response = await request(app).get('/images/doesnotexist');
     expect(response.status).toBe(404);
-    expect(response.text).toBe('Image failed to process: base file does not exist');
+    expect(response.text).toBe(
+      'Image failed to process: base file does not exist',
+    );
   });
 });
 
 // اختبارات معالجة الصور
 describe('اختبارات توليد الصور', () => {
   const randomWidth = Math.floor(Math.random() * 300) + 50;
-  const outputPath = join(config.THUMBNAIL_IMAGES_FOLDER, `test-w${randomWidth}.jpg`);
+  const outputPath = join(
+    config.THUMBNAIL_IMAGES_FOLDER,
+    `test-w${randomWidth}.jpg`,
+  );
 
   // تنظيف الملفات قبل وبعد الاختبارات
   beforeAll(() => {
@@ -49,7 +55,9 @@ describe('اختبارات توليد الصور', () => {
 
   // اختبار توليد الصورة عبر API
   it('GET /images/test.jpg?w=[RANDOM] - يجب أن يعيد 200', async () => {
-    const response = await request(app).get(`/images/test.jpg?w=${randomWidth}`);
+    const response = await request(app).get(
+      `/images/test.jpg?w=${randomWidth}`,
+    );
     expect(response.status).toBe(200);
   });
 
@@ -63,7 +71,7 @@ describe('اختبارات توليد الصور', () => {
   it('مقارنة حجم الصورة المُنشأة مع الطلب', async () => {
     const buffer = readFileSync(outputPath);
     const dimensions = await sizeOfAsync(buffer);
-    
+
     if (!dimensions?.width) {
       throw new Error('فشل في قراءة أبعاد الصورة');
     }

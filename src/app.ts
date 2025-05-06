@@ -17,26 +17,31 @@ app.use('/api/images', (req: Request, res: Response, next: NextFunction) => {
 
   // التحقق من وجود جميع المعلمات
   if (!filename || !width || !height) {
-    return res.status(400).json({ 
-      error: 'المعلمات المطلوبة: اسم الملف (filename)، العرض (width)، الارتفاع (height)' 
+    return res.status(400).json({
+      error:
+        'المعلمات المطلوبة: اسم الملف (filename)، العرض (width)، الارتفاع (height)',
     });
   }
 
   // التحقق من أن العرض والارتفاع أرقام صحيحة
   const parsedWidth = Number(width);
   const parsedHeight = Number(height);
-// الخطأ في السطر 29
-if (isNaN(parsedWidth)) { // ✅ أضف القوس المفقود
+  // الخطأ في السطر 29
+  if (isNaN(parsedWidth)) {
+    // ✅ أضف القوس المفقود
     return res.status(400).json({ error: 'العرض (width) يجب أن يكون رقمًا' });
   }
-  
+
   if (isNaN(parsedHeight)) {
-    return res.status(400).json({ error: 'الارتفاع (height) يجب أن يكون رقمًا' });
+    return res
+      .status(400)
+      .json({ error: 'الارتفاع (height) يجب أن يكون رقمًا' });
   }
-  
 
   if (parsedWidth <= 0 || parsedHeight <= 0) {
-    return res.status(400).json({ error: 'العرض والارتفاع يجب أن يكونا قيمتين موجبتين' });
+    return res
+      .status(400)
+      .json({ error: 'العرض والارتفاع يجب أن يكونا قيمتين موجبتين' });
   }
 
   // التحقق من وجود الملف الأصلي
@@ -80,7 +85,7 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 });
 
 // تشغيل الخادم
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
   console.log(`الخادم يعمل على المنفذ ${PORT}`);
 });

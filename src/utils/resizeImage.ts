@@ -2,7 +2,11 @@ import sharp from 'sharp';
 import config from '../config';
 import { generateFileName } from './generateFileName';
 
-export async function resizeImage(imageName: string, width: number | null, height: number | null): Promise<string> {
+export async function resizeImage(
+  imageName: string,
+  width: number | null,
+  height: number | null,
+): Promise<string> {
   const originalFolder = config.ORIGINAL_IMAGES_FOLDER + '/';
   const thumbnailFolder = config.THUMBNAIL_IMAGES_FOLDER + '/';
   const resizedImageName = generateFileName(imageName, width, height);

@@ -1,6 +1,5 @@
-import { generateFileName } from '../utils/generateFileName';
-import { app } from '../app';
-
+import { generateFileName } from '../src/utils/generateFileName'; // المسار الصحيح
+import { app } from '../src/app'; // المسار الصحيح
 describe('Should return nice.jpg', () => {
   it('Should return nice.jpg', () => {
     const result = generateFileName('nice', null, null);

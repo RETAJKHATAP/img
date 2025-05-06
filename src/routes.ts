@@ -6,18 +6,16 @@ import path from 'path';
 
 const _routes: [string, Router][] = [
   ['/', IndexController],
-  ['/upload', UploadController],
-  ['/images', ImagesController],
+  ['/api/images', ImagesController],
+  ['/api/upload', UploadController],
 ];
 
 export const routes = (app: Application): void => {
-  _routes.forEach((route) => {
-    const [url, controller] = route;
+  _routes.forEach(([url, controller]) => {
     app.use(url, controller);
   });
 
-  // Serve the frontend HTML file for all other routes
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  app.use('*', (req, res) => {
+    res.status(404).send('Endpoint not found');
   });
 };

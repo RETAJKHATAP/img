@@ -108,4 +108,3 @@ Uploaded images are saved in images/full/.
 Resized images are saved in images/thumb/ and reused on repeated requests.
 
 Developed with passion by Retaj Khattab
-

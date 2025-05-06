@@ -1,6 +1,6 @@
-import config from '../config';
-import { fileExist } from '../utils/fileExist';
-import { app } from '../app';
+import config from '../src/config'; // المسار الصحيح
+import { fileExist } from '../src/utils/fileExist'; // المسار الصحيح
+import { app } from '../src/app'; // المسار الصحيح
 
 describe('fileExists utility gives back true for existing file', () => {
   it('Should return true', () => {

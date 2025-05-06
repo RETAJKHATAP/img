@@ -1,38 +1,57 @@
 import { Request, Response, Router } from 'express';
-import multer from 'multer';
-import config from '../config';
+import multer, { FileFilterCallback } from 'multer';
 import path from 'path';
 import { promises as fs } from 'fs';
+import config from '../config';
 
-
-export const UploadController: Router = Router();
-
-UploadController.get('/', (req: Request, res: Response): Response => res.status(200).send('Image Processing API'));
+declare global {
+  namespace Express {
+    interface Request {
+      file?: Express.Multer.File;
+    }
+  }
+}
 
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, config.ORIGINAL_IMAGES_FOLDER);
+  destination: (
+    req: Request,
+    file: Express.Multer.File,
+    cb: (error: Error | null, destination: string) => void,
+  ) => {
+    cb(null, config.THUMBNAIL_IMAGES_FOLDER);
   },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
+  filename: (
+    req: Request,
+    file: Express.Multer.File,
+    cb: (error: Error | null, filename: string) => void,
+  ) => {
+    cb(null, Date.now() + path.extname(file.originalname));
   },
 });
 
-const fileFilter = (req: Request, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
-  const allowedExtensions = ['.jpg', '.jpeg'];
-  const fileExtension = path.extname(file.originalname).toLowerCase();
-  if (allowedExtensions.includes(fileExtension)) {
+const fileFilter = (
+  req: Request,
+  file: Express.Multer.File,
+  cb: FileFilterCallback,
+) => {
+  if (file.mimetype.startsWith('image/')) {
     cb(null, true);
   } else {
-    cb(new Error('Only .jpg and .jpeg files are allowed.'));
+    cb(new Error('Invalid file type'));
   }
 };
 
-const upload = multer({ storage: storage, fileFilter: fileFilter });
+export const upload = multer({ storage, fileFilter });
 
-UploadController.post('/', upload.single('image'), async (req: Request, res: Response): Promise<Response> => {
-  if (!req.file) {
-    return res.status(400).send('No file uploaded.');
-  }
-  return res.send('SUCCESS!');
-});
+export const UploadController: Router = Router();
+
+UploadController.post(
+  '/',
+  upload.single('image'),
+  async (req: Request, res: Response) => {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file uploaded' });
+    }
+    res.status(200).json({ path: req.file.path });
+  },
+);

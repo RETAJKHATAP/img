@@ -69,4 +69,3 @@ async function handleUpload(event) {
 fetchImages();
 resizeForm.addEventListener('submit', handleResize);
 uploadForm.addEventListener('submit', handleUpload);
-

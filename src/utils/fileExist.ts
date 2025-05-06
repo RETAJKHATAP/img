@@ -1,10 +1,3 @@
 import fs from 'fs';
-
-export function fileExist(path: string): boolean {
-  try {
-    fs.accessSync(path);
-    return true;
-  } catch (e) {
-    return false;
-  }
-}
+import { existsSync } from 'fs';
+export const fileExist = (path: string): boolean => existsSync(path);
