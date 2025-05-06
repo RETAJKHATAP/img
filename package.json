@@ -4,14 +4,11 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-  
-  "test": "jasmine --config=spec/support/jasmine.json",
-
     "build": "tsc",
     "start": "node build/index.js",
-  
-    "lint": "eslint --ext .ts src",
-    "prettier": "prettier --config .prettierrc --write \"src/**/*.ts\"",
+    "test": "tsc && jasmine",
+    "lint": "eslint . --ext .ts",
+    "prettify": "prettier --write .",
     "copy:assets": "cp -r src/images/ dist/images",
     "dev": "nodemon src/index.ts"
   },

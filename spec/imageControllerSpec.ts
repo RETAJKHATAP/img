@@ -1,7 +1,7 @@
 import request from 'supertest';
-import { app } from '../app';
-import config from '../config';
-import { fileExist } from '../utils/fileExist';
+import { app } from '../src/app';
+import config from '../src/config';
+import { fileExist } from '../src/utils/fileExist';
 import sizeOf from 'image-size';
 import { unlinkSync, readFileSync } from 'fs';
 import { promisify } from 'util';
