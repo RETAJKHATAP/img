@@ -1,4 +1,5 @@
 import { generateFileName } from '../utils/generateFileName';
+import { app } from '../app';
 
 describe('Should return nice.jpg', () => {
   it('Should return nice.jpg', () => {

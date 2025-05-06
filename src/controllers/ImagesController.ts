@@ -1,4 +1,5 @@
 import { Request, Response, Router } from 'express';
+import request from 'supertest';
 import config from '../config';
 import { resizeImage } from '../utils/resizeImage';
 import { fileExist } from '../utils/fileExist';

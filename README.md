@@ -1,114 +1,111 @@
-# Image Processing Web App
+Image Processing Web App
+This is a full-stack image processing web application built with Node.js, Express, TypeScript, and Sharp. It allows users to upload .jpg images, resize them through a simple interface, and display processed images dynamically.
 
-This is an image processing web application that allows users to resize and upload images. The app consists of a backend API built with Express.js and a frontend user interface implemented using HTML, CSS, and JavaScript.
+Project Structure
+The project is organized as follows:
 
-## Features
+public/: Frontend (HTML, JS, CSS)
 
-View a gallery of available images
-Resize images by specifying custom width and height
-Upload new images in JPG or JPEG format
-Backend API for image processing and serving resized images
-Frontend user interface for interacting with the API
+src/: Backend source code (TypeScript)
 
-## Installation
+routes/: API routes
 
-Clone the repository:
-`git clone https://github.com/Dhadhazi/Image-Processing-Web-App.git`
+controllers/: Logic handlers
 
-Navigate to the project directory:
-`cd image-processing-web-app`
+utils/: Utility functions (e.g., image resizing)
 
-Install the dependencies:
-`npm install`
+spec/: Unit and integration tests
 
-Start the development server:
-`npm start`
+images/:
 
-Open your web browser and visit http://localhost:8000 to access the application, or open the html file in the /public folder
+full/: Original uploaded images
 
-## Usage for /public
+thumb/: Processed/resized images
 
-Viewing Images
+dist/: Compiled JavaScript code
 
-- The home page displays a gallery of available images.
-- Click on an image to select it for resizing.
+package.json
 
-Resizing Images
+tsconfig.json
 
-- Select an image from the gallery or the dropdown menu.
-- Enter the desired width and height for the resized image.
-- Click the "Resize" button to generate the resized image.
-- The URL of the resized image will be displayed below the form.
+Features
+Upload .jpg images using a drag & drop form.
 
-Uploading Images
+Display uploaded images in a dynamic gallery.
 
-- Click on the "Choose File" button in the upload section.
-- Select a JPG or JPEG image file from your local machine.
-- Click the "Upload" button to upload the image to the server.
-- The uploaded image will be added to the gallery and available for resizing.
+Resize selected images using a simple input form.
 
-API Endpoints
+Automatically cache and retrieve resized images.
 
-- GET /images: Retrieves a list of available images.
-- GET /images/:imageName: Retrieves a specific image by name.
-  - Query parameters:
-    - w: Width of the resized image (optional)
-    - h: Height of the resized image (optional)
-  - Example: http://localhost:8000/images/fjord.jpg?w=200&h=800
-- POST /upload: Uploads a new image file.
+Responsive frontend interface (no page refresh required).
 
-## Project Structure
-The project structure is organized as follows:
-```
-├── src/
-│   ├── controllers/
-│   │   ├── ImagesController.ts
-│   │   ├── IndexController.ts
-│   │   └── UploadController.ts
-│   ├── images/
-│   │   ├── original/
-│   │   └── thumbnails/
-│   ├── tests/
-│   │   ├── helpers/
-│   │   ├── ImagesController.test.ts
-│   │   ├── IndexController.test.ts
-│   │   ├── UploadController.test.ts
-│   │   ├── UtilFileExist.test.ts
-│   │   ├── UtilGenerateFileName.test.ts
-│   │   └── UtilResizeImage.test.ts
-│   ├── utils/
-│   │   ├── fileExist.ts
-│   │   ├── generateFileName.ts
-│   │   └── resizeImage.ts
-│   ├── app.ts
-│   ├── config.ts
-│   ├── index.ts
-│   └── routes.ts
-├── public/
-│   ├── index.html
-│   ├── script.js
-│   └── style.css
-├── package.json
-└── README.md
-```
-- The `src` directory contains the backend source code.
-  - The `controllers` directory contains the route handlers for different endpoints.
-  - The `images` directory stores the original and resized images.
-  - The `tests` directory contains the unit tests for the backend code.
-  - The `utils` directory contains utility functions used in the backend.
-  - `app.ts` is the main entry point for the Express application.
-  - `config.ts` contains configuration variables for the backend.
-  - `index.ts` is the entry point for the server.
-  - `routes.ts` defines the API routes and their corresponding controllers.
+Input validation and descriptive error handling.
 
-- The `public` directory contains the frontend files.
-  - `index.html` is the main HTML file for the frontend.
-  - `script.js` contains the JavaScript code for the frontend functionality.
-  - `style.css` contains the CSS styles for the frontend.
+Unit and API tests using Jasmine and SuperTest.
 
-- `package.json` contains the project dependencies and scripts.
-- `README.md` is the project documentation file.
+Technologies Used
+Node.js
 
-## License
+Express
 
-This project is licensed under the MIT License.
+TypeScript
+
+Sharp
+
+Multer (for image upload)
+
+Jasmine & SuperTest (for testing)
+
+Prettier & ESLint (for formatting and linting)
+
+Available Scripts
+npm run build – Compile TypeScript files
+
+npm start – Start the Express server
+
+npm run test – Run unit and integration tests
+
+npm run lint – Run ESLint for code quality
+
+npm run prettify – Format code using Prettier
+
+Testing
+Tests are included for:
+
+API endpoints (/api/images, /api/upload)
+
+Image processing utility (resizeImage)
+
+Input validation
+
+To run the tests, use:
+npm run test
+
+How to Run the App
+Install dependencies:
+npm install
+
+Build the TypeScript files:
+npm run build
+
+Start the server:
+npm start
+
+Open your browser and go to:
+http://localhost:8000
+
+Example Usage
+Resize an image using a URL like:
+http://localhost:8000/api/images?filename=example.jpg&width=300&height=200
+
+Upload a new image using the form, and it will instantly appear in the gallery without refreshing the page.
+
+Notes
+Only .jpg and .jpeg files are allowed.
+
+Uploaded images are saved in images/full/.
+
+Resized images are saved in images/thumb/ and reused on repeated requests.
+
+Developed with passion by Retaj Khattab
+

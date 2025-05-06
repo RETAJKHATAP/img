@@ -2,6 +2,8 @@ import { Request, Response, Router } from 'express';
 import multer from 'multer';
 import config from '../config';
 import path from 'path';
+import { promises as fs } from 'fs';
+
 
 export const UploadController: Router = Router();
 

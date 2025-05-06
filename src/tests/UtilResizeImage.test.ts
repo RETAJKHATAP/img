@@ -2,6 +2,7 @@ import { unlinkSync } from 'fs';
 import config from '../config';
 import { fileExist } from '../utils/fileExist';
 import { resizeImage } from '../utils/resizeImage';
+import { app } from '../app';
 
 describe('resizeImage utility creates the file', () => {
   it('Should create the file', async () => {
