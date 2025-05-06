@@ -18,7 +18,7 @@ folders.forEach((folder) => {
   if (!existsSync(folder)) {
     mkdirSync(folder, { recursive: true });
   }
-});g
+});
 ImagesController.get('/', (req: Request, res: Response): void => {
   try {
     const imageFiles = fs.readdirSync(config.ORIGINAL_IMAGES_FOLDER);
