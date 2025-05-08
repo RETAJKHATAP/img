@@ -5,12 +5,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ImagesController = void 0;
 const express_1 = require("express");
-const config_1 = __importDefault(require("../config"));
-const resizeImage_1 = require("../utils/resizeImage");
 const fileExist_1 = require("../utils/fileExist");
 const generateFileName_1 = require("../utils/generateFileName");
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
+const express_2 = __importDefault(require("express"));
+const resizeImage_1 = require("../utils/resizeImage");
+const config_1 = __importDefault(require("../config"));
 exports.ImagesController = (0, express_1.Router)();
 const fs_2 = require("fs");
 const folders = [
@@ -38,10 +39,10 @@ exports.ImagesController.get('/:imageName', async (req, res) => {
         res.status(404).send('Base image not found');
         return;
     }
-    const width = Number(req.query.w) || 0;
-    const height = Number(req.query.h) || 0;
-    if (width <= 0 && height <= 0) {
-        res.status(400).send('Invalid dimensions');
+    const width = req.query.w ? Number(req.query.w) : null;
+    const height = req.query.h ? Number(req.query.h) : null;
+    if (!width || !height || width <= 0 || height <= 0) {
+        res.status(400).send('Width and height must be positive numbers');
         return;
     }
     const imageNameWithoutExt = imageName.split('.')[0];
@@ -55,5 +56,29 @@ exports.ImagesController.get('/:imageName', async (req, res) => {
     }
     catch (error) {
         res.status(500).send('Image processing failed');
+    }
+});
+const router = express_2.default.Router();
+router.get('/images/:imageName', async (req, res) => {
+    try {
+        const { imageName } = req.params;
+        const width = Number(req.query.w);
+        const height = Number(req.query.h);
+        // التحقق من صحة الأبعاد
+        if (isNaN(width) || isNaN(height) || width <= 0 || height <= 0) {
+            return res.status(400).json({ error: 'أبعاد غير صالحة' });
+        }
+        // معالجة الصورة
+        const processedImage = await (0, resizeImage_1.resizeImage)(imageName, width, height);
+        const imagePath = path_1.default.join(config_1.default.THUMBNAIL_IMAGES_FOLDER, processedImage);
+        res.status(200).sendFile(imagePath);
+    }
+    catch (error) {
+        if (error instanceof Error) {
+            res.status(500).json({ error: error.message });
+        }
+        else {
+            res.status(500).json({ error: 'An unknown error occurred' });
+        }
     }
 });

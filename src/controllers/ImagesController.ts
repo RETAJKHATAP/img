@@ -1,10 +1,12 @@
 import { Request, Response, Router } from 'express';
-import config from '../config';
-import { resizeImage } from '../utils/resizeImage';
 import { fileExist } from '../utils/fileExist';
 import { generateFileName } from '../utils/generateFileName';
 import fs from 'fs';
 import path from 'path';
+import {app} from '../app';
+import express from 'express';
+import { resizeImage } from '../utils/resizeImage';
+import config from '../config';
 
 export const ImagesController: Router = Router();
 import { existsSync, mkdirSync } from 'fs';
@@ -39,13 +41,14 @@ ImagesController.get(
       return;
     }
 
-    const width = Number(req.query.w) || 0;
-    const height = Number(req.query.h) || 0;
-
-    if (width <= 0 && height <= 0) {
-      res.status(400).send('Invalid dimensions');
+    const width = req.query.w ? Number(req.query.w) : null;
+    const height = req.query.h ? Number(req.query.h) : null;
+    
+    if (!width || !height || width <= 0 || height <= 0) {
+      res.status(400).send('Width and height must be positive numbers');
       return;
     }
+  
 
     const imageNameWithoutExt = imageName.split('.')[0];
     const resizedImageName = generateFileName(imageNameWithoutExt, width, height);
@@ -61,3 +64,30 @@ ImagesController.get(
     }
   },
 );
+
+const router = express.Router();
+
+router.get('/images/:imageName', async (req, res) => {
+  try {
+    const { imageName } = req.params;
+    const width = Number(req.query.w);
+    const height = Number(req.query.h);
+
+    // التحقق من صحة الأبعاد
+    if (isNaN(width) || isNaN(height) || width <= 0 || height <= 0) {
+      return res.status(400).json({ error: 'أبعاد غير صالحة' });
+    }
+
+    // معالجة الصورة
+    const processedImage = await resizeImage(imageName, width, height);
+    const imagePath = path.join(config.THUMBNAIL_IMAGES_FOLDER, processedImage);
+
+    res.status(200).sendFile(imagePath);
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: 'An unknown error occurred' });
+    }
+  }
+});

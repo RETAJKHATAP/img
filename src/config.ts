@@ -1,8 +1,6 @@
-const config = {
-  PORT: 8000,
-  ORIGINAL_IMAGES_FOLDER: "./images/full",
-  THUMBNAIL_IMAGES_FOLDER: "./images/thumbnails",
-  SERVER: 'http://localhost:8000',
+import path from 'path';
+export default {
+  ORIGINAL_IMAGES_FOLDER: path.join(__dirname, '../../images/full'),
+  THUMBNAIL_IMAGES_FOLDER: path.join(__dirname, '../../images/thumbnails'),
+  PORT: process.env.PORT || 8000,
 };
-
-export default config;

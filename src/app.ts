@@ -1,18 +1,29 @@
-import express, { Request, Response, NextFunction } from 'express';
+import express , { Request, Response, NextFunction } from 'express';
 import { existsSync, mkdirSync } from 'fs';
 import sharp from 'sharp';
+import { IndexController } from './controllers/IndexController';
+import { ImagesController } from './controllers/ImagesController';
+import { UploadController } from './controllers/UploadController';
 
-// تهيئة التطبيق
 export const app = express();
+
+app.use('/', IndexController);
+app.use('/images', ImagesController);
+app.use('/upload', UploadController);
+app.get('/upload', (req, res) => {
+  res.status(200).send('<form method="POST" enctype="multipart/form-data" action="/upload"><input type="file" name="image"/><button type="submit">Upload</button></form>');
+});
 
 // إنشاء مجلد الصور المصغرة إذا لم يكن موجودًا
 const thumbnailsDir = 'src/images/thumbnails';
 if (!existsSync(thumbnailsDir)) {
   mkdirSync(thumbnailsDir, { recursive: true });
 }
-
+app.get('/', (req, res) => {
+  res.status(200).send('Welcome to the homepage!');
+});
 // Middleware للتحقق من المدخلات
-app.use('/api/images', (req: Request, res: Response, next: NextFunction) => {
+app.use('/images', (req: Request, res: Response, next: NextFunction) => {
   const { filename, width, height } = req.query;
 
   // التحقق من وجود جميع المعلمات
@@ -28,10 +39,10 @@ app.use('/api/images', (req: Request, res: Response, next: NextFunction) => {
   const parsedHeight = Number(height);
   // الخطأ في السطر 29
   if (isNaN(parsedWidth)) {
-    // ✅ أضف القوس المفقود
+    // ✅
     return res.status(400).json({ error: 'العرض (width) يجب أن يكون رقمًا' });
   }
-
+ 
   if (isNaN(parsedHeight)) {
     return res
       .status(400)
@@ -54,7 +65,7 @@ app.use('/api/images', (req: Request, res: Response, next: NextFunction) => {
 });
 
 // Route لمعالجة الصورة
-app.get('/api/images', async (req: Request, res: Response) => {
+app.get('/images', async (req: Request, res: Response) => {
   const { filename, width, height } = req.query;
   const parsedWidth = Number(width);
   const parsedHeight = Number(height);

@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response, Router } from 'express';
 export const IndexController: Router = Router();
+import {app} from '../app';
 
 IndexController.get(
   '/',

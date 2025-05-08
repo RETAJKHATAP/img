@@ -3,9 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateFileName = generateFileName;
 function generateFileName(imageName, width, height) {
     let name = imageName;
-    if (width)
+    if (width !== null && width !== undefined)
         name += `-w${width}`;
-    if (height)
+    if (height !== null && height !== undefined)
         name += `-h${height}`;
     return `${name}.jpg`;
 }

@@ -42,7 +42,7 @@ describe('اختبارات توليد الصور', () => {
     });
     // اختبار توليد الصورة عبر API
     it('GET /images/test.jpg?w=[RANDOM] - يجب أن يعيد 200', async () => {
-        const response = await (0, supertest_1.default)(app_1.app).get(`/images/test.jpg?w=${randomWidth}`);
+        const response = await (0, supertest_1.default)(app_1.app).get(`/images/full/test.jpg?w=${randomWidth}`);
         expect(response.status).toBe(200);
     });
     // اختبار وجود الملف بعد التوليد
